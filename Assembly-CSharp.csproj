@@ -47,6 +47,9 @@
      <Compile Include="Assets\Scripts\BossSelect.cs" />
      <Compile Include="Assets\Scripts\Cursor.cs" />
      <Compile Include="Assets\Scripts\MainMenu_LoadItems.cs" />
+     <Compile Include="Assets\Scripts\playerControls.cs" />
+     <Compile Include="Assets\SimplePixelizer\SimplePixelizer.cs" />
+     <None Include="Assets\SimplePixelizer\ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
