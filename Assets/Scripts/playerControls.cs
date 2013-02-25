@@ -159,7 +159,7 @@ private Vector3 velocity = Vector3.zero;      												  // speed of player a
       
             //Stop this coroutine  
             StopCoroutine("PlayLoop");  
-        } 
+    } 
 	
 	
 }
