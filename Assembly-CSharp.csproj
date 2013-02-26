@@ -44,6 +44,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Bosses\FallingLeafAttack.cs" />
+     <Compile Include="Assets\Scripts\Bosses\RotateLeaf.cs" />
+     <Compile Include="Assets\Scripts\Bosses\SwirlyLeafAttack.cs" />
+     <Compile Include="Assets\Scripts\Bosses\WoodMan.cs" />
      <Compile Include="Assets\Scripts\Character.cs" />
      <Compile Include="Assets\Scripts\Enemies\Bat.cs" />
      <Compile Include="Assets\Scripts\Enemies\Bunny.cs" />
