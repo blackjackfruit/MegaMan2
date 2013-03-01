@@ -48,10 +48,13 @@
      <Compile Include="Assets\Scripts\Bosses\RotateLeaf.cs" />
      <Compile Include="Assets\Scripts\Bosses\SwirlyLeafAttack.cs" />
      <Compile Include="Assets\Scripts\Bosses\WoodMan.cs" />
+     <Compile Include="Assets\Scripts\CameraMove.cs" />
+     <Compile Include="Assets\Scripts\CameraTrigger.cs" />
      <Compile Include="Assets\Scripts\Character.cs" />
      <Compile Include="Assets\Scripts\Enemies\Bat.cs" />
      <Compile Include="Assets\Scripts\Enemies\Bunny.cs" />
      <Compile Include="Assets\Scripts\Enemies\RoboTiger.cs" />
+     <Compile Include="Assets\Scripts\MegaMan.cs" />
      <Compile Include="Assets\Scripts\Menus\BossSelect.cs" />
      <Compile Include="Assets\Scripts\Menus\BossSelectAnimation.cs" />
      <Compile Include="Assets\Scripts\Menus\Cursor.cs" />

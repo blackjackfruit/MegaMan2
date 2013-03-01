@@ -44,7 +44,7 @@ public class Character : MonoBehaviour {
 	}
 	
 	public void initImages(){
-		print("Initialized " + directoryPath);
+		//print("Initialized " + directoryPath);
 		ArrayList images = new ArrayList();
 		for(int x = 0; x < directorySize; x++){
 			images.Add(Resources.Load(directoryPath+x, typeof(Texture)));

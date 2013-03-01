@@ -2,25 +2,16 @@
 using UnityEngine;
 using System.Collections;
 
-public class playerControls : MonoBehaviour {
+public class playerControls : Character {
 	
 
 private Texture[] textures;
+private Transform thisTransform;
 
-private Material goMaterial;
-	
-
-	
-public int frame = 0;
-private int frameStart = 0;
-public int frameEnd = 0;
-private int frameCounter = 0;
 	
 private int fire2FrameStart = 0;
 private int fire2FrameEnd = 3;
 	
-bool fire2release = true;
-bool attackFinished = false;
 	
 public int direction;
 	
@@ -30,40 +21,35 @@ private ArrayList runAnimations_list = new ArrayList();
 	
 private Texture[] runAnimations;
 	
-private Vector3 rightImageSide = new Vector3(30f,180f,0f);
-private Vector3 leftImageSide = new Vector3(30f,180f,180f);
+private Vector3 rightImageSide = new Vector3(90f,180f,0f);
+private Vector3 leftImageSide = new Vector3(90f,0f,0f);
 	
 	
-private bool characterPosMove = false;		
-
-float runSpeed      = 4.0f;												 					  //speed of run
-float runJump       = 10.5f;												  					  //jump height from run
-float gravity       = 30.0f;																  //force applied on char
-float startPos	    = 0.0f;																	  //Location of starting position
-int moveDirection   = 1;																	  //facing right is 1, facing left is 0
-	
-private Vector3 velocity = Vector3.zero;      												  // speed of player and direction
-	
-	void Awake(){
-		this.goMaterial = renderer.material;	
-	}
-	
-	static ArrayList addImage(string dir, int size){
-		ArrayList images = new ArrayList();
 		
-		for(int x = 0; x < size; x++){
-			images.Add(Resources.Load(dir+x, typeof(Texture)));
-		}
-		return images;
+
+float runSpeed      = 5.0f;												 					  										//speed of run
+float airSpeed      = 4.0f;												 					  										//speed of megaman while in the air
+float runJump       = 10.5f;												  				  										//jump height from run
+float gravity       = 30.0f;																  										//force applied on char
+float gravityFall   = -100;
+float falling	    = 0.0f;																	  										//Location of starting position
+int moveDirection   = 1;																	  										//facing right is 1, facing left is 0
+	
+private Vector3 velocity = Vector3.zero;      												  										// speed of player and direction
+	
+private float bulletCounter;
+private GameObject bullet;
+
+	public playerControls()
+	:base("MegaMan/",18,.15f){
+		
 	}
 	
 	// Use this for initialization
 	void Start () {
 		
 
-		runAnimations = addImage("MegaMan/", 32).ToArray(typeof(Texture)) as Texture[];
-		
-		
+		initImages();
 		
 		
 	}
@@ -71,95 +57,125 @@ private Vector3 velocity = Vector3.zero;      												  // speed of player a
 	
 	
 	
-    void Update() {																			//Update
+    void Update() {																													//Update
 		
 		
 		
         CharacterController controller = GetComponent<CharacterController>();
+		velocity.x = Input.GetAxis("Horizontal");
+		thisTransform = transform;
 		
-		velocity.y -= gravity * Time.deltaTime;
+		if(Input.GetButton("Fire2")){																								//Shooting	
+			if(bulletCounter > .1f){
+				bullet = Instantiate(Resources.Load("Attack/Bullet")) as GameObject;
+				bullet.transform.position = new Vector3(transform.position.x, transform.position.y,0);
+				bulletCounter = 0;
+			}
+			bulletCounter += Time.deltaTime;			
+							
+		}
 		
+		if(velocity.x == 0 && controller.isGrounded && moveDirection == 0 && Input.GetButton ("Fire2")){							//still shooting left
 		
-		if ( velocity.x == 0 && controller.isGrounded && moveDirection == 1){				//idle right
-			
-			goMaterial.mainTexture = (Texture)runAnimations[18];
+				transform.eulerAngles = leftImageSide;
+				setFrame(14);
 			
 		}
-
-		if ( velocity.x == 0 && controller.isGrounded && moveDirection == 0){				//idle left
+		if(velocity.x == 0 && controller.isGrounded && moveDirection == 1 && Input.GetButton ("Fire2")){							//still shooting right
+				transform.eulerAngles = rightImageSide;
+				setFrame(14);
 			
-			goMaterial.mainTexture = (Texture)runAnimations[4];
-		}
-
-    	
-    	
-    	if (controller.isGrounded && Input.GetButton("Jump")){								//Jump
+		}		
+		if(!controller.isGrounded && moveDirection == 0 && Input.GetButton ("Fire2")){												//air shooting left
+				transform.eulerAngles = leftImageSide;
+				setFrame(12);
+			
+		}			
+		if(!controller.isGrounded && moveDirection == 1 && Input.GetButton ("Fire2")){												//air shooting right
+				transform.eulerAngles = rightImageSide;
+				setFrame(12);
+			
+		}	
+		
+		if (controller.isGrounded){																									//Falling
     		
+    		velocity.y = gravityFall* Time.deltaTime;
+			velocity.x *= airSpeed;
+    	}
+		
+		if ( velocity.x == 0 && controller.isGrounded && moveDirection == 1 && !Input.GetButton ("Fire2")){							//idle right
+			
+			transform.eulerAngles = rightImageSide;
+			setFrame(4);
+		}
+
+		if ( velocity.x == 0 && controller.isGrounded && moveDirection == 0 && !Input.GetButton ("Fire2")){							//idle left
+			transform.eulerAngles = leftImageSide;
+			setFrame(4);
+		}
+
+    	
+    	
+    	if (controller.isGrounded && Input.GetButtonDown("Jump") && !Input.GetButton ("Fire2")){									//Jump
+    		setFrame(10);
     		velocity.y = runJump;
     	}
 		
-    	if(!controller.isGrounded && moveDirection == 0){									//left facing jump animation
-			goMaterial.mainTexture = (Texture)runAnimations[10];
+		if (!controller.isGrounded){																								//Falling
+    		setFrame(10);
+    		velocity.y -= gravity * Time.deltaTime;
+			velocity.x *= airSpeed;
+    	}
+		
+    	if(!controller.isGrounded && moveDirection == 0 && !Input.GetButton ("Fire2")){												//left facing jump animation
+			transform.eulerAngles = leftImageSide;
+			setFrame(10);
+			
 		}
     	
-		if(!controller.isGrounded && moveDirection == 1){									//right facing jump animation
-			goMaterial.mainTexture = (Texture)runAnimations[24];
+		if(!controller.isGrounded && moveDirection == 1 && !Input.GetButton ("Fire2")){												//right facing jump animation
+			transform.eulerAngles = rightImageSide;
+			setFrame(10);
 		}
    
     
-    	velocity.x = Input.GetAxis("Horizontal");
-    	velocity.x *= runSpeed;
+    	
     	
     
     
-    if( velocity.x < 0){																	//check if facing left
-    	moveDirection = 0;
+    if( velocity.x < 0){																											//check if facing left
+    	moveDirection = 1;
 			
-		if(controller.isGrounded){															//left run animation
-			animMoveCharacter(7,9);
+		if(controller.isGrounded && !Input.GetButton ("Fire2")){																	//left run animation
+			transform.eulerAngles = rightImageSide;
+			playAnimation(7,9);
 			
 		}
-		
+		if(controller.isGrounded && Input.GetButton ("Fire2")){																		//left run shoot animation
+			transform.eulerAngles = rightImageSide;
+			playAnimation(15,17);
+			
+		}
     }
     
-    if( velocity.x > 0){																	//check if facing right
-    	moveDirection = 1;
+    if( velocity.x > 0){																											//check if facing right
+    	moveDirection = 0;	
 		
-		if(controller.isGrounded){															//right run animation
-			animMoveCharacter(21,23);
+		if(controller.isGrounded && !Input.GetButton ("Fire2")){																	//right run animation
+			transform.eulerAngles = leftImageSide;
+			playAnimation(7,10);
 				
 		}
+		if(controller.isGrounded && Input.GetButton ("Fire2")){																		//right run shoot animation
+			transform.eulerAngles = leftImageSide;
+			playAnimation(15,17);
+			
+		}
+
     }
     
-    
-    controller.Move( velocity * Time.deltaTime);
-        
+   
+    controller.Move( velocity * Time.deltaTime);    
 		
 }
-	void animMoveCharacter(int fStart, int fEnd){											//Animation frameset method
-		
-		
-		frameEnd = fEnd;
-		frameStart = fStart;
-		StartCoroutine("PlayLoop", .1);
-		goMaterial.mainTexture = (Texture)runAnimations[frameCounter];
-	}
-	
-	IEnumerator PlayLoop(float delay){  													//Loop animation with delay between frames
-            //Wait for the time defined at the delay parameter  
-            yield return new WaitForSeconds(delay);    
-      
-            //Advance one frame  
-            frameCounter = (++frameCounter)% runAnimations.Length;  
-		
-			// reset to the begining of the animation
-			if(frameCounter < frameStart || frameCounter > frameEnd){
-				frameCounter = frameStart;
-			}
-      
-            //Stop this coroutine  
-            StopCoroutine("PlayLoop");  
-    } 
-	
-	
 }
