@@ -23,6 +23,9 @@ public class CameraTrigger : MonoBehaviour {
 		}else if(gameObject.name.Equals("Switch-01")){
 			mainCamera.cameraSwitch = "Switch-01";
 			mainCamera.moveCamera = true;
+		}else if(gameObject.name.Equals("Switch-02")){
+			mainCamera.cameraSwitch = "Switch-02";
+			mainCamera.moveCamera = true;	
 		}
 	}
 	

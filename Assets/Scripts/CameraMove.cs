@@ -24,17 +24,21 @@ public class CameraMove : MonoBehaviour {
 		// Switch-## is set.
 		else if(moveCamera){
 			if(cameraSwitch.Equals("Switch-01")){
-				camera.animation.Blend("Switch-01");
-				// if alloFollow is set to true, then the cameraY position should change
-				cameraY = -12;
-				allowFollow = false;
+				positionCamera(60.65f, -13.21f);
+			}else if(cameraSwitch.Equals("Switch-02")){
+				cameraY = -27.35f;
+				positionCamera(60.65f, cameraY);
+				allowFollow = true;
+				
 			}
 			moveCamera = false;
 		}
 			
 	}
 	
-	
+	public void positionCamera(float x, float y){
+		camera.transform.position = new Vector3(x, y, 6.42f);
+	}
 	
 	void OnTriggerEnter(Collider c){
 		

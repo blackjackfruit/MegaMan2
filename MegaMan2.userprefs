@@ -1,8 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CameraMove.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Bosses/WoodMan.cs">
     <Files>
-      <File FileName="Assets/Scripts/CameraMove.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Bosses/WoodMan.cs" Line="114" Column="17" />
+      <File FileName="Assets/Scripts/DoorAnimationDown.cs" Line="13" Column="71" />
+      <File FileName="Assets/Scripts/Bosses/SwirlyLeafAttack.cs" Line="20" Column="4" />
+      <File FileName="Assets/Scripts/playerControls.cs" Line="70" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -10,10 +13,11 @@
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Bosses" expanded="True" />
+                <Node name="Bosses" expanded="True">
+                  <Node name="WoodMan.cs" selected="True" />
+                </Node>
                 <Node name="Enemies" expanded="True" />
                 <Node name="Menus" expanded="True" />
-                <Node name="CameraMove.cs" selected="True" />
               </Node>
               <Node name="Shader" expanded="True" />
               <Node name="SimplePixelizer" expanded="True" />
